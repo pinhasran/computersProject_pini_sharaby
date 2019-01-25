@@ -60,23 +60,23 @@ def create_a_dict(input_file): #check if row or column and return a dictionary
     return(values_dict)
 
 
-def fit_linear(filename):
-    input_file=open(filename)
-    values_dict=create_a_dict(input_file)
+def fit_linear(filename):                               
+    input_file = open(filename)
+    values_dict = create_a_dict(input_file)
     if type(values_dict) == str:
         print(values_dict)
-    elif check_uncertainties(values_dict)!= 0:
+    elif check_uncertainties(values_dict) != 0:
         print(check_uncertainties(values_dict))
     else:
-        x=dy=values_dict['x']
-        dx=dy=values_dict['dx']
-        y=dy=values_dict['y']
-        dy=values_dict['dy']
-        xy=[]
-        x_squared=[]
-        y_squared=[]
-        dy_squared=[]
-        chi=[]
+        x  = values_dict['x']
+        dx = values_dict['dx']
+        y  = values_dict['y']
+        dy = values_dict['dy']
+        xy = []
+        x_squared  = []
+        y_squared  = []
+        dy_squared = []
+        chi = []
         for i in range(len(x)):
             xy.append(x[i] * y[i])
             x_squared.append(x[i] ** 2)
@@ -84,11 +84,11 @@ def fit_linear(filename):
             dy_squared.append(dy[i] ** 2)
         a=(roof(xy,dy) - roof(x,dy) * roof(y,dy)) / (roof(x_squared,dy) - roof(x,dy) ** 2)
         da=(roof(dy_squared,dy) / (len(x) * (roof(x_squared,dy) - roof(x,dy) ** 2))) ** 0.5
-        b=roof(y,dy)-a*roof(x,dy)
-        db=((roof(dy_squared,dy)*roof(x_squared,dy)) / (len(x)*(roof(x_squared,dy)
-                                                         - roof(x,dy) ** 2))) ** 0.5
+        b=roof(y,dy) - a * roof(x,dy)
+        db=((roof(dy_squared,dy) * roof(x_squared,dy)) / (len(x) * (roof(x_squared,dy)
+                                                           - roof(x,dy) ** 2))) ** 0.5
         for i in range(len(x)):
-            chi.append(((y[i] - (a * x[i] + b)) / dy[i])**2)
+            chi.append(((y[i] - (a * x[i] + b)) / dy[i]) ** 2)
         chi2=sum(chi)
         chi2_reduced= chi2 / (len(chi) - 2)
         print("a = ",a," +- ",da)
